@@ -1,13 +1,13 @@
 # Burp Suite Mastery
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+![Markdown](https://img.shields.io/badge/Markdown-Documentation-blue?style=flat-square)
+![Beginner Friendly](https://img.shields.io/badge/Beginner-Friendly-brightgreen?style=flat-square)
+![Hands-on](https://img.shields.io/badge/Hands--on-Yes-success?style=flat-square)
+![Cybersecurity](https://img.shields.io/badge/Cybersecurity-Offensive-red?style=flat-square)
+![Pentesting](https://img.shields.io/badge/Pentesting-Web_App-important?style=flat-square)
+![Burp Suite](https://img.shields.io/badge/Burp-Suite_Professional-orange?style=flat-square)
 
 > **A complete hands-on Burp Suite learning path for web application security, bug bounty hunting, and penetration testing.**
-
-![License](https://img.shields.io/badge/License-MIT-blue)
-![Hands-On](https://img.shields.io/badge/Hands--On-Yes-success)
-![Interview Ready](https://img.shields.io/badge/Interview-Ready-blue)
-![Bug Bounty](https://img.shields.io/badge/Bug_Bounty-Focused-orange)
-![Pentesting](https://img.shields.io/badge/Pentesting-Practical-red)
-![Burp Suite](https://img.shields.io/badge/Burp-Suite-darkred)
 
 ---
 
