@@ -193,16 +193,16 @@ During a Real Security Assessment?
 ├── 03-Application-Mapping-Challenge.md
 ├── 04-Authentication-and-Session-Challenge.md
 ├── 05-Authorization-Challenge.md
-├── 06-API-and-Business-Logic-Challenge.md
-├── 07-Injection-and-Input-Validation-Challenge.md
-├── 08-Advanced-Attack-Surface-Challenge.md
-├── 09-Vulnerability-Validation-and-Evidence-Challenge.md
-├── 10-Professional-Reporting-Challenge.md
-├── 11-Full-Capstone-Assessment.md
-├── 12-Burp-Suite-Interview-Questions.md
-├── 13-Pentesting-Scenario-Interview-Questions.md
-├── 14-Burp-Suite-Quick-Reference.md
-└── 15-Final-Mastery-Checklist.md
+├── 06-Input-Validation-and-Injection-Challenge.md
+├── 07-Business-Logic-Challenge.md
+├── 08-File-Upload-and-File-Handling-Challenge.md
+├── 09-API-Security-Challenge.md
+├── 10-Advanced-Web-Attacks-Challenge.md
+├── 11-Race-Conditions-Challenge.md
+├── 12-Professional-Reporting-Challenge.md
+├── 13-Burp-Suite-Interview-Mastery.md
+├── 14-Burp-Suite-Ultimate-Quick-Reference.md
+└── 15-Final-Words.md
 ```
 
 ---
