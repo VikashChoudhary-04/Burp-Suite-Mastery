@@ -1789,6 +1789,28 @@ Automatically Exploitable CSWSH
 
 ---
 
+## SameSite Cookies
+
+* Cookie behavior can affect whether browser credentials are available in cross-site scenarios.
+
+* Consider:
+
+  ```text
+  SameSite
+
+  Secure
+
+  Domain
+
+  Path
+  ```
+
+* Do not infer exploitability from Origin handling alone.
+
+---
+
+---
+
 ## CSRF Tokens and WebSockets
 
 * Some WebSocket handshakes or authentication messages may require anti-CSRF-style tokens.
@@ -2088,6 +2110,118 @@ Where Possible
 
   Can Hidden Actions Be Invoked?
   ```
+
+---
+
+## GraphQL Subscriptions
+
+* GraphQL subscriptions may operate over WebSockets.
+
+* Messages may contain:
+
+  ```text
+  connection_init
+
+  subscribe
+
+  next
+
+  error
+
+  complete
+  ```
+
+* Exact protocol details vary.
+
+---
+
+---
+
+## GraphQL Subscription Security
+
+* Test:
+
+  ```text
+  Authentication During Connection
+
+  Authorization During Subscription
+
+  Object / Tenant Boundaries
+
+  Sensitive Event Exposure
+
+  Connection Revocation
+  ```
+
+---
+
+---
+
+## WebSocket Message Injection
+
+* User-controlled message fields may eventually reach:
+
+  ```text
+  HTML Rendering
+
+  Databases
+
+  Commands
+
+  Templates
+
+  Logs
+
+  Other Users
+  ```
+
+* Injection risk depends on how backend and frontend components process the data.
+
+---
+
+---
+
+## Stored Data
+
+* A WebSocket message may store content that is later delivered through:
+
+  ```text
+  WebSocket
+
+  HTTP
+
+  Email
+
+  Notification
+
+  Dashboard
+  ```
+
+* Trace the full data flow before evaluating impact.
+
+---
+
+---
+
+## Output Encoding
+
+* If user-controlled WebSocket data is rendered in a browser, verify whether the receiving client handles it safely.
+
+* Security depends on:
+
+  ```text
+  Storage
+
+  Transformation
+
+  Output Context
+
+  Encoding
+
+  Sanitization
+  ```
+
+---
 
 ---
 
@@ -3519,7 +3653,12 @@ Next Steps:
 47. How can WebSocket race conditions occur?
 48. What evidence is required for a strong WebSocket authorization finding?
 49. What evidence is required to demonstrate meaningful CSWSH impact?
-50. Describe your complete methodology for testing WebSocket security using Burp Suite.
+50. How can GraphQL subscriptions use WebSockets?
+51. What authorization checks are important for GraphQL subscriptions?
+52. How can WebSocket data lead to injection vulnerabilities?
+53. Why must stored WebSocket data be traced to its final output context?
+54. How can SameSite cookie behavior affect cross-site WebSocket attack feasibility?
+55. Describe your complete methodology for testing WebSocket security using Burp Suite.
 
 ---
 
@@ -3762,6 +3901,10 @@ Next Steps:
 * Cross-Site WebSocket Hijacking generally requires a combination of browser-applied credentials, insufficient origin protection, cross-site connectivity, and meaningful sensitive capability.
 * Missing `Origin` validation alone is not enough to prove exploitable CSWSH.
 * Server-pushed messages should be reviewed for unnecessary sensitive data, cross-user exposure, and cross-tenant leakage.
+* GraphQL subscriptions carried over WebSockets require authentication, subscription authorization, object and tenant boundary checks, and review of sensitive event exposure.
+* User-controlled WebSocket data may cross multiple processing boundaries, so injection testing should trace data through storage, transformation, and final rendering or execution contexts.
+* Stored WebSocket-originated data may later surface through HTTP pages, dashboards, notifications, email, or other clients; output encoding and sanitization must be evaluated at the eventual sink.
+* SameSite, Secure, Domain, and Path cookie attributes can materially affect cross-site WebSocket attack feasibility and should be considered alongside Origin validation.
 * WebSocket rate-limit and connection-limit testing must remain low volume and should not become stress testing.
 * Final application state must be verified after state-changing WebSocket tests rather than relying only on protocol responses.
 * Strong findings demonstrate a clear difference between expected and actual security behavior using controlled accounts, controlled objects, reproducible messages, and meaningful impact.
