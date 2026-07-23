@@ -52,7 +52,6 @@ Business Logic Vulnerability
   * Exploiting stale application state.
   * Abusing invitation or referral systems.
   * Violating approval workflows.
-  * Exploiting race conditions.
   * Creating inconsistent states across related operations.
 
 * Effective testing requires understanding:
@@ -89,8 +88,6 @@ Can Those Assumptions Be Violated?
   * Test approval workflows.
   * Test stale-state behavior.
   * Test multi-account interactions.
-  * Analyze race-condition candidates.
-  * Test idempotency.
   * Identify inconsistent validation across workflows.
   * Validate business impact safely.
   * Build reusable business-logic test matrices.
@@ -141,8 +138,6 @@ Workflow-Maps.md
 Business-Logic-Test-Matrix.md
 
 State-Transition-Matrix.md
-
-Race-Condition-Candidates.md
 
 Validated-Findings/
 
@@ -418,8 +413,6 @@ Values Come From Trusted Pages
 Client-Side Calculations Are Honest
 
 One User Controls One Account
-
-Requests Do Not Arrive Simultaneously
 
 State Does Not Change Between Steps
 ```
@@ -1036,10 +1029,6 @@ Alternate Endpoint
 
 ↓
 
-Concurrent Request
-
-↓
-
 Different Session
 
 ↓
@@ -1389,163 +1378,7 @@ Time-of-Use
 
 ---
 
-# Phase 25 — Identify Race-Condition Candidates
-
-* Look for operations involving:
-
-```text
-Check Limit
-
-↓
-
-Modify Shared State
-```
-
----
-
-## High-Value Candidates
-
-```text
-Coupon Redemption
-
-Credit Spending
-
-Inventory Purchase
-
-Reward Claim
-
-Invitation Acceptance
-
-Username Claim
-
-Voting
-
-Reservation
-
-Withdrawal
-
-Resource Creation Limits
-```
-
----
-
-# Race Candidate Formula
-
-```text
-Check
-
-↓
-
-Small Timing Window
-
-↓
-
-State Change
-```
-
-* If multiple requests enter the timing window simultaneously, the intended rule may fail.
-
----
-
-# Phase 26 — Test Concurrency Safely
-
-* Use controlled resources and low request counts.
-
----
-
-## Workflow
-
-```text
-Establish Single-Request Baseline
-
-↓
-
-Confirm Expected Limit
-
-↓
-
-Prepare Small Concurrent Request Set
-
-↓
-
-Send Simultaneously
-
-↓
-
-Verify Persistent Final State
-```
-
----
-
-## Record
-
-```text
-Requests Sent
-
-Successful Responses
-
-Expected State Change
-
-Actual State Change
-
-Final Balance / Count / Ownership
-```
-
----
-
-# Important
-
-```text
-Multiple 200 Responses
-
-≠
-
-Confirmed Race Condition
-```
-
-* Verify the actual business state.
-
----
-
-# Phase 27 — Test Idempotency
-
-* Some operations should produce the same final state even when repeated.
-
----
-
-## Candidates
-
-```text
-Payment Creation
-
-Order Submission
-
-Refund
-
-Resource Creation
-
-Webhook Processing
-
-Subscription Change
-```
-
----
-
-## Ask
-
-```text
-Does the Request Have an Idempotency Key?
-
-Is It Enforced?
-
-What Scope Does It Use?
-
-What Happens on Replay?
-```
-
----
-
-# Phase 28 — Test Duplicate Submission
+# Phase 25 — Test Duplicate Submission
 
 * Users may:
 
@@ -1557,8 +1390,6 @@ Refresh
 Retry
 
 Replay
-
-Send Concurrently
 ```
 
 * Determine whether duplicate requests create:
@@ -1577,7 +1408,7 @@ Duplicate Invitations
 
 ---
 
-# Phase 29 — Test Stale Requests
+# Phase 26 — Test Stale Requests
 
 * Capture a valid request.
 
@@ -1633,7 +1464,7 @@ Does the Server Trust Stale Client State?
 
 ---
 
-# Phase 30 — Test Multi-Tab and Multi-Session Behavior
+# Phase 27 — Test Multi-Tab and Multi-Session Behavior
 
 * Different browser contexts may preserve different states.
 
@@ -1683,7 +1514,7 @@ Different Controlled Accounts
 
 ---
 
-# Phase 31 — Test Multi-Account Interactions
+# Phase 28 — Test Multi-Account Interactions
 
 * Some business rules depend on relationships between accounts.
 
@@ -1735,7 +1566,7 @@ Who Owns the Result?
 
 ---
 
-# Phase 32 — Test Alternative Workflows
+# Phase 29 — Test Alternative Workflows
 
 * The same business action may exist through:
 
@@ -1775,7 +1606,7 @@ Must Enforce Same Limit
 
 ---
 
-# Phase 33 — Test Workflow Parameter Tampering
+# Phase 30 — Test Workflow Parameter Tampering
 
 * Look for fields representing business state.
 
@@ -1823,7 +1654,7 @@ Should the Server Derive It?
 
 ---
 
-# Phase 34 — Test Hidden Fields
+# Phase 31 — Test Hidden Fields
 
 * UI forms may contain hidden business values.
 
@@ -1849,7 +1680,7 @@ Trusted
 
 ---
 
-# Phase 35 — Test Validation Consistency
+# Phase 32 — Test Validation Consistency
 
 * The same rule may be enforced differently across:
 
@@ -1897,7 +1728,7 @@ Role Field Accepted
 
 ---
 
-# Phase 36 — Test Error Recovery Paths
+# Phase 33 — Test Error Recovery Paths
 
 * Unexpected paths may bypass normal rules.
 
@@ -1933,7 +1764,7 @@ Does Recovery Revalidate the Original Business Rules?
 
 ---
 
-# Phase 37 — Test Partial Failure
+# Phase 34 — Test Partial Failure
 
 * Multi-step operations may partially succeed.
 
@@ -1975,7 +1806,7 @@ Can Partial State Be Abused?
 
 ---
 
-# Phase 38 — Build the Business Logic Test Matrix
+# Phase 35 — Build the Business Logic Test Matrix
 
 | Rule              | Baseline       | Mutation     | Expected | Actual  | Status |
 | ----------------- | -------------- | ------------ | -------- | ------- | ------ |
@@ -1986,7 +1817,7 @@ Can Partial State Be Abused?
 
 ---
 
-# Phase 39 — Build the State Transition Matrix
+# Phase 36 — Build the State Transition Matrix
 
 | Current State | Requested Action | Expected        | Actual  |
 | ------------- | ---------------- | --------------- | ------- |
@@ -1997,7 +1828,7 @@ Can Partial State Be Abused?
 
 ---
 
-# Phase 40 — Validate Candidate Findings
+# Phase 37 — Validate Candidate Findings
 
 * Business logic findings require proof of the violated rule.
 
@@ -2113,7 +1944,7 @@ Final Action Completed
 
 ---
 
-# Phase 41 — Determine Business Impact
+# Phase 38 — Determine Business Impact
 
 * Impact may include:
 
@@ -2167,7 +1998,7 @@ Meaningful Impact
 
 ---
 
-# Phase 42 — Identify Root Cause
+# Phase 39 — Identify Root Cause
 
 * Common root causes include:
 
@@ -2179,10 +2010,6 @@ Missing Server-Side State Validation
 Trusted Client-Controlled Values
 
 Missing Revalidation
-
-Missing Atomicity
-
-Missing Idempotency
 
 Inconsistent Validation Across Endpoints
 
@@ -2197,7 +2024,7 @@ Missing Separation of Duties
 
 ---
 
-# Phase 43 — Collect Evidence
+# Phase 40 — Collect Evidence
 
 * Preserve:
 
@@ -2344,15 +2171,7 @@ Approvals
 
 ---
 
-## Stage 7 — Concurrency
-
-* Identify at least three potential race-condition candidates.
-
-* Test only where safe and authorized.
-
----
-
-## Stage 8 — Validation
+## Stage 7 — Validation
 
 * Classify every candidate:
 
@@ -2389,13 +2208,7 @@ Which Limits Exist?
 
 Which Steps Require Revalidation?
 
-Which Operations Need Atomicity?
-
-Which Operations Need Idempotency?
-
 Can Stale Requests Be Reused?
-
-Can Concurrent Requests Break Rules?
 
 Are Rules Consistent Across Interfaces?
 ```
@@ -2457,10 +2270,6 @@ Test Stale State
 
 ↓
 
-Test Concurrency
-
-↓
-
 Test Alternate Interfaces
 
 ↓
@@ -2503,11 +2312,8 @@ Report
 * Ignoring stale requests.
 * Ignoring multi-tab behavior.
 * Ignoring duplicate submissions.
-* Ignoring idempotency.
 * Ignoring partial failures.
 * Ignoring recovery workflows.
-* Ignoring race-condition candidates.
-* Treating multiple 200 responses as proof of a race condition.
 * Failing to verify persistent state.
 * Using uncontrolled real transactions.
 * Creating financial impact unnecessarily.
@@ -2535,9 +2341,6 @@ Report
 * Use multiple controlled accounts for relational workflows.
 * Test invitation and approval lifecycle states.
 * Check whether revoked or expired objects remain usable.
-* Look for check-then-update operations as race candidates.
-* Keep concurrency tests small and controlled.
-* Test idempotency for financially or operationally sensitive actions.
 * Revalidate state at final workflow steps.
 * Check stale requests after underlying state changes.
 * Test retries, resumes, cancellations, and recovery paths.
@@ -2631,41 +2434,33 @@ Report
 
 41. Test multiple sessions.
 
-42. Identify three race-condition candidates.
+42. Verify final persistent state.
 
-43. Establish single-request baselines.
+43. Test duplicate submissions.
 
-44. Perform safe concurrency testing where authorized.
+44. Compare equivalent web and API workflows.
 
-45. Verify final persistent state.
+45. Test recovery and retry paths.
 
-46. Identify idempotency-sensitive endpoints.
+46. Analyze partial-failure behavior.
 
-47. Test duplicate submissions.
+47. Build the business-logic test matrix.
 
-48. Compare equivalent web and API workflows.
+48. Build the state-transition matrix.
 
-49. Test recovery and retry paths.
+49. Validate every suspicious result.
 
-50. Analyze partial-failure behavior.
+50. Determine attacker benefit.
 
-51. Build the business-logic test matrix.
+51. Determine business impact.
 
-52. Build the state-transition matrix.
+52. Identify root cause.
 
-53. Validate every suspicious result.
+53. Collect minimal sufficient evidence.
 
-54. Determine attacker benefit.
+54. Restore controlled test state where necessary.
 
-55. Determine business impact.
-
-56. Identify root cause.
-
-57. Collect minimal sufficient evidence.
-
-58. Restore controlled test state where necessary.
-
-59. Write the final business-logic summary.
+55. Write the final business-logic summary.
 
 ---
 
@@ -2701,26 +2496,21 @@ Report
 28. What is separation of duties?
 29. How do you test cancellation and refund logic?
 30. What is TOCTOU?
-31. How do you identify race-condition candidates?
-32. How do you validate a race condition?
-33. Why do multiple successful HTTP responses not prove a race condition?
-34. What is idempotency?
-35. Which operations commonly require idempotency?
-36. What is a stale-request vulnerability?
-37. How can multiple tabs expose logic flaws?
-38. Why are multiple controlled accounts useful?
-39. How do hidden fields relate to business logic testing?
-40. Why should validation consistency be compared across endpoints?
-41. What logic flaws can occur in retry or recovery workflows?
-42. What is a partial-failure state?
-43. How do you validate a business logic vulnerability?
-44. What evidence should be collected?
-45. How do you calculate business impact?
-46. What are common root causes of business logic flaws?
-47. How do you test financially sensitive workflows safely?
-48. How do you prioritize business logic tests?
-49. Why are business logic flaws difficult for automated scanners?
-50. Walk me through your complete business logic testing methodology.
+31. What is a stale-request vulnerability?
+32. How can multiple tabs expose logic flaws?
+33. Why are multiple controlled accounts useful?
+34. How do hidden fields relate to business logic testing?
+35. Why should validation consistency be compared across endpoints?
+36. What logic flaws can occur in retry or recovery workflows?
+37. What is a partial-failure state?
+38. How do you validate a business logic vulnerability?
+39. What evidence should be collected?
+40. How do you calculate business impact?
+41. What are common root causes of business logic flaws?
+42. How do you test financially sensitive workflows safely?
+43. How do you prioritize business logic tests?
+44. Why are business logic flaws difficult for automated scanners?
+45. Walk me through your complete business logic testing methodology.
 
 ---
 
@@ -2802,20 +2592,6 @@ Requested Action
 Is Transition Allowed?
 ```
 
-* Race condition:
-
-```text
-Check
-
-↓
-
-Timing Window
-
-↓
-
-Update
-```
-
 * Validation:
 
 ```text
@@ -2851,7 +2627,6 @@ BUSINESS
 [ ] Roles identified
 [ ] Limits identified
 
-
 WORKFLOWS
 
 [ ] Steps mapped
@@ -2859,7 +2634,6 @@ WORKFLOWS
 [ ] Allowed transitions
 [ ] Required approvals
 [ ] One-time actions
-
 
 SEQUENCE
 
@@ -2869,7 +2643,6 @@ SEQUENCE
 [ ] Duplicate submission
 [ ] Stale request
 
-
 NUMERIC
 
 [ ] Zero
@@ -2878,7 +2651,6 @@ NUMERIC
 [ ] Maximum boundary
 [ ] Large values
 [ ] Decimal / precision
-
 
 VALUE
 
@@ -2890,7 +2662,6 @@ VALUE
 [ ] Currency
 [ ] Server recalculation
 
-
 LIMITS
 
 [ ] Per user
@@ -2899,7 +2670,6 @@ LIMITS
 [ ] Per order
 [ ] Per day
 [ ] Alternate interfaces
-
 
 WORKFLOWS
 
@@ -2911,7 +2681,6 @@ WORKFLOWS
 [ ] Refunds
 [ ] Cancellations
 
-
 STATE
 
 [ ] Current-state validation
@@ -2920,16 +2689,6 @@ STATE
 [ ] Multi-tab
 [ ] Multi-session
 [ ] Partial failures
-
-
-CONCURRENCY
-
-[ ] Race candidates
-[ ] Single-request baseline
-[ ] Small concurrent test
-[ ] Final state verified
-[ ] Idempotency
-
 
 VALIDATION
 
@@ -2961,13 +2720,10 @@ VALIDATION
 * Limits and quotas should be tested at their boundaries and across alternate interfaces.
 * Separation-of-duties requirements must be enforced server-side.
 * Final workflow steps should revalidate current security-sensitive state rather than trusting stale earlier checks.
-* Race-condition candidates commonly involve a check followed by modification of shared state.
-* Concurrency testing requires persistent-state verification; multiple successful responses alone are insufficient.
-* Idempotency prevents duplicate effects when sensitive operations are retried or replayed.
 * Stale requests can expose failures to revalidate prices, permissions, eligibility, or workflow state.
 * Multi-tab, multi-session, and multi-account testing can reveal state inconsistencies hidden during linear testing.
 * Equivalent business rules should be enforced consistently across web, API, mobile, GraphQL, legacy, and administrative interfaces.
 * Retry, resume, undo, cancellation, recovery, and partial-failure paths deserve independent testing.
 * Strong findings explain the exact violated business rule, attacker benefit, resulting business cost, exploitability, and root cause.
 * Automated scanners are generally weak at finding business logic vulnerabilities because the tester must understand what the application is supposed to permit.
-* The complete methodology is **understand the business → identify valuable assets → document rules → map workflows and states → identify assumptions → capture baselines → manipulate sequence and state → test replay and boundaries → test value calculations and limits → test multi-account workflows → test stale state and concurrency → compare alternate interfaces → verify persistent effects → validate rule violation → determine business impact → report**.
+* The complete methodology is **understand the business → identify valuable assets → document rules → map workflows and states → identify assumptions → capture baselines → manipulate sequence and state → test replay and boundaries → test value calculations and limits → test multi-account workflows → test stale state → compare alternate interfaces → verify persistent effects → validate rule violation → determine business impact → report**.
