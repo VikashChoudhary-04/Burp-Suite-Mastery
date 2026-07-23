@@ -1,235 +1,441 @@
 # Proxy Tool
 
-## Objectives
-
-- By the end of this chapter, you will be able to:
-
-  * Understand the purpose of the Proxy tool
-  * Configure and use request interception
-  * Analyze HTTP history
-  * Modify requests before they reach the server
-  * Inspect and modify responses
-  * Use Proxy effectively during penetration tests and bug bounty engagements
+> **Module 05 of the Burp Suite Mastery Guide**
 
 ---
 
-## What is the Proxy Tool?
+## Overview
 
-- The Proxy tool is the core component of Burp Suite. It acts as an intercepting proxy between your browser and the target web application.
+- The Proxy tool is the foundation of Burp Suite's traffic-interception workflow.
 
-- Every HTTP and HTTPS request from your browser passes through the Proxy before reaching the server.
+- It operates between the client and the target application, allowing HTTP, HTTPS, and WebSocket traffic to be observed, intercepted, modified, forwarded, dropped, and analyzed.
 
-- Likewise, every response from the server passes back through the Proxy before being displayed in your browser.
-
-- Without the Proxy tool, Burp Suite would not be able to inspect or manipulate web traffic.
+- This module develops the practical skills required to use Burp Proxy as part of a structured web application security assessment.
 
 ---
 
-## Why Does the Proxy Tool Exist?
+## Learning Objectives
 
-- Browsers send requests automatically.
+- By the end of this module, you will be able to:
 
-- Normally, you cannot pause or modify those requests before they reach the server.
-
-- The Proxy tool solves this problem by placing Burp Suite between the browser and the web server, giving you complete control over the communication.
-
-- This enables you to:
-
-  * Inspect requests
-  * Modify requests
-  * Drop requests
-  * Replay requests
-  * Analyze responses
-  * Discover vulnerabilities
+  * Understand Burp Proxy's role in the request-response lifecycle.
+  * Understand the Proxy interface and interception architecture.
+  * Intercept, inspect, modify, forward, and drop requests.
+  * Understand response interception and modification.
+  * Analyze application traffic using HTTP history.
+  * Inspect WebSocket communication using WebSockets history.
+  * Configure proxy listeners and relevant Proxy settings.
+  * Use interception rules and Match and Replace appropriately.
+  * Build efficient Proxy-based investigation workflows.
+  * Troubleshoot common interception and connectivity problems.
+  * Apply Proxy safely during authorized penetration tests and bug bounty assessments.
 
 ---
 
-## Where Does the Proxy Fit?
+## Prerequisites
+
+- Before beginning this module, you should understand:
+
+  * Basic HTTP requests and responses.
+  * HTTP methods, headers, parameters, cookies, and status codes.
+  * HTTPS and TLS at a conceptual level.
+  * How Burp Suite acts as an intercepting proxy.
+  * Browser proxy configuration.
+  * Burp's CA certificate and HTTPS interception.
+
+- Modules **01–04** should ideally be completed first.
+
+---
+
+## Module Structure
+
+```text
+05-Proxy/
+│
+├── README.md
+├── 01-Introduction.md
+├── 02-Interface-and-Proxy-Architecture.md
+├── 03-Intercepting-Requests.md
+├── 04-Modifying-and-Forwarding-Requests.md
+├── 05-HTTP-History-and-Traffic-Analysis.md
+├── 06-Response-Interception-and-Modification.md
+├── 07-Match-and-Replace.md
+├── 08-Proxy-Listeners-and-Settings.md
+├── 09-Request-and-Response-Interception-Rules.md
+├── 10-Professional-Proxy-Workflow.md
+├── 11-Common-Mistakes.md
+├── 12-Practical-Exercises.md
+├── 13-Interview-Questions.md
+└── 14-Quick-Revision.md
+```
+
+---
+
+## Learning Path
+
+```text
+Introduction
+
+↓
+
+Interface & Proxy Architecture
+
+↓
+
+Intercepting Requests
+
+↓
+
+Modifying & Forwarding Requests
+
+↓
+
+Intercepting & Modifying Responses
+
+↓
+
+HTTP History & Traffic Analysis
+
+↓
+
+WebSocket History
+
+↓
+
+Proxy Listeners & Settings
+
+↓
+
+Interception Rules & Match and Replace
+
+↓
+
+Professional Proxy Workflow
+
+↓
+
+Common Mistakes & Troubleshooting
+
+↓
+
+Practical Exercises
+
+↓
+
+Interview Questions
+
+↓
+
+Quick Revision
+```
+
+---
+
+## Core Mental Model
+
+```text
+Client / Browser
+      │
+      ▼
+  Burp Proxy
+      │
+      ▼
+Target Application
+```
+
+- Burp Proxy sits in the communication path between the client and server.
+
+- This position allows the tester to observe and control traffic before continuing the normal request-response flow.
 
 ```text
 Browser
-    │
-    ▼
+   │
+   │ Request
+   ▼
 Burp Proxy
-    │
-    ▼
-Target Server
+   │
+   │ Inspect / Modify / Forward / Drop
+   ▼
+Server
+   │
+   │ Response
+   ▼
+Burp Proxy
+   │
+   │ Inspect / Analyze / Modify
+   ▼
+Browser
 ```
-
-- Every request flows through the Proxy.
 
 ---
 
-## Components of the Proxy Tool
+## Core Proxy Capabilities
 
-- The Proxy tool contains several important sections:
+- The Proxy workflow includes several closely related capabilities:
 
-  * Intercept
-  * HTTP History
-  * WebSockets History
-  * Options (or Proxy Settings, depending on the Burp version)
-
-- Each section serves a different purpose.
+  * Request interception.
+  * Request inspection and modification.
+  * Request forwarding and dropping.
+  * Response interception and modification.
+  * HTTP history analysis.
+  * WebSocket message inspection.
+  * Proxy listener configuration.
+  * Interception rules.
+  * Match and Replace.
+  * Integration with other Burp Suite tools.
 
 ---
 
 ## Intercept
 
-- The Intercept tab allows you to pause requests before they are sent to the server.
+- Intercept allows selected traffic to pause inside Burp before continuing.
 
-- When **Intercept is ON**:
+- When interception is enabled, a tester can:
 
-  * Requests stop inside Burp.
-  * You can inspect or modify them.
-  * You choose when they are forwarded.
+  * Inspect the complete request.
+  * Modify parameters.
+  * Modify headers.
+  * Modify cookies.
+  * Remove or add request data.
+  * Forward the request.
+  * Drop the request.
+  * Send the request to other Burp tools.
 
-- When **Intercept is OFF**:
+- Interception should be used deliberately.
 
-  * Requests pass through automatically.
-  * Burp still records them in HTTP History.
-
-- **Professional Tip:** During general browsing, keep Intercept OFF. Turn it ON only when you want to inspect or modify a specific request.
+- During general application browsing, HTTP history is often more efficient than stopping every request.
 
 ---
 
 ## HTTP History
 
-- HTTP History records every request and response that passes through the Proxy.
+- HTTP history provides a record of proxied HTTP traffic.
 
-- For each request, you can view information such as:
+- It allows testers to review application behavior without manually intercepting every request.
 
-  * Host
-  * Method
-  * URL
-  * Status code
-  * MIME type
-  * Response length
-  * Timestamp
+- Useful information may include:
 
-- HTTP History is often the starting point for manual testing because it provides a complete record of application traffic.
+  * Host.
+  * HTTP method.
+  * URL and path.
+  * Parameters.
+  * Status code.
+  * MIME type.
+  * Response length.
+  * Request and response contents.
 
----
-
-## WebSockets History
-
-- Some modern applications use WebSockets instead of traditional HTTP requests.
-
-- The WebSockets History tab records these messages, allowing you to inspect real-time communication between the browser and the server.
+- During professional testing, HTTP history frequently becomes the starting point for identifying requests worth deeper investigation.
 
 ---
 
-## Proxy Settings
+## WebSocket History
 
-- The Proxy settings allow you to configure how Burp listens for browser traffic.
+- Modern applications may use WebSockets for persistent bidirectional communication.
 
-- Common settings include:
+- WebSockets history helps testers inspect messages exchanged after the initial WebSocket handshake.
 
-  * Proxy listeners
-  * Listening address
-  * Listening port
-  * Request interception rules
-  * Response interception rules
+- WebSocket traffic may expose:
 
-- The default listener is:
+  * Authentication behavior.
+  * Authorization decisions.
+  * Real-time application actions.
+  * Object identifiers.
+  * Subscription mechanisms.
+  * Client-controlled message fields.
 
-  * Address: `127.0.0.1`
-  * Port: `8080`
+- WebSocket testing is explored further in later modules.
 
 ---
 
-## Typical Workflow
+## Proxy Configuration
 
-- A common manual testing workflow is:
+- Proxy behavior depends on correctly configured listeners and client routing.
+
+- A common local configuration is:
 
   ```text
-  Browse the application
-          │
-          ▼
-  Requests appear in HTTP History
-          │
-          ▼
-  Identify an interesting request
-          │
-          ▼
-  Send it to Repeater
-          │
-          ▼
-  Modify parameters
-          │
-          ▼
-  Analyze responses
+  Address: 127.0.0.1
+  Port:    8080
   ```
 
-- This simple workflow is used repeatedly throughout web application assessments.
+- The exact configuration may vary depending on:
+
+  * Testing environment.
+  * Browser configuration.
+  * Mobile-device testing.
+  * Virtual machines.
+  * Containers.
+  * Remote clients.
+  * Network architecture.
+
+- Listener exposure should always be configured deliberately and safely.
 
 ---
 
-## Real-World Example
+## Professional Proxy Workflow
 
-- Imagine you submit a login form.
+```text
+Confirm Authorization and Scope
 
-- The browser sends:
+↓
 
-  ```http
-  POST /login HTTP/1.1
-  Host: example.com
-  Content-Type: application/x-www-form-urlencoded
-  
-  username=alice&password=Password123
-  ```
+Configure Browser and Proxy
 
-- With Intercept ON, Burp pauses this request before it reaches the server.
+↓
 
-- You can:
+Browse the Application Normally
 
-  * View the request.
-  * Modify the username or password.
-  * Add or remove headers.
-  * Change cookies.
-  * Forward or drop the request.
+↓
+
+Observe HTTP History
+
+↓
+
+Identify Security-Relevant Requests
+
+↓
+
+Establish a Baseline
+
+↓
+
+Send Interesting Requests to Appropriate Burp Tools
+
+↓
+
+Modify One Relevant Variable at a Time
+
+↓
+
+Compare Behavior
+
+↓
+
+Verify Application State
+
+↓
+
+Preserve Evidence
+```
+
+- Proxy is primarily the observation and traffic-control layer.
+
+- Deeper manual experimentation is often performed using tools such as Repeater, Intruder, Comparer, Scanner, or specialized extensions.
 
 ---
 
-## Professional Tips
+## Example Investigation Flow
 
-* Keep Intercept OFF during normal browsing.
-* Use HTTP History as your primary source of requests.
-* Read the entire request before making changes.
-* Save interesting requests for later analysis.
+```text
+User Performs an Application Action
+        │
+        ▼
+Request Appears in Proxy
+        │
+        ▼
+Inspect Request Structure
+        │
+        ▼
+Identify Security-Relevant Inputs
+        │
+        ▼
+Review Authentication and Session Context
+        │
+        ▼
+Send Request to Repeater
+        │
+        ▼
+Establish Baseline
+        │
+        ▼
+Perform Controlled Modification
+        │
+        ▼
+Compare Result
+        │
+        ▼
+Verify Final Application State
+        │
+        ▼
+Document Evidence
+```
+
+---
+
+## Professional Principles
+
+- Use Proxy to understand application behavior before attempting security tests.
+
+- Prefer controlled testing over random modification.
+
+- Keep the authorized scope visible and verified.
+
+- Avoid changing multiple variables simultaneously when investigating behavior.
+
+- Treat HTTP history as evidence, but verify important findings independently.
+
+- Distinguish unusual behavior from an actual security boundary violation.
+
+- Preserve reproducible requests and responses for validated findings.
+
+- Never test systems without explicit authorization.
 
 ---
 
 ## Common Mistakes
 
-* Leaving Intercept ON and wondering why pages stop loading.
-* Editing multiple parameters at once.
-* Ignoring HTTP History.
-* Forgetting to verify the scope before testing.
+- Common mistakes include:
+
+  * Leaving Intercept enabled during normal browsing and assuming the application is broken.
+  * Testing before verifying scope.
+  * Ignoring HTTP history.
+  * Modifying several parameters simultaneously.
+  * Failing to establish a legitimate baseline.
+  * Assuming a changed response automatically proves a vulnerability.
+  * Ignoring redirects or asynchronous requests.
+  * Overlooking WebSocket traffic.
+  * Misconfiguring proxy listeners.
+  * Confusing browser, TLS, DNS, and proxy problems.
+  * Failing to verify final application state after a state-changing request.
 
 ---
 
-## Practice Tasks
+## Module Goal
 
-1. Enable Intercept.
-2. Visit `https://example.com`.
-3. Observe the intercepted request.
-4. Forward the request.
-5. Disable Intercept.
-6. Browse a few pages.
-7. Open HTTP History and review the recorded requests.
+- The goal of this module is not simply to teach how to turn interception on and off.
 
----
+- The goal is to develop a disciplined traffic-analysis workflow:
 
-## Interview Questions
+  ```text
+  Observe
 
-1. What is the purpose of the Proxy tool?
-2. What happens when Intercept is ON?
-3. What happens when Intercept is OFF?
-4. Why is HTTP History important?
-5. How does the Proxy tool assist in vulnerability testing?
+  ↓
 
----
+  Understand
 
-## Summary
+  ↓
 
-- The Proxy tool is the foundation of Burp Suite. It enables you to intercept, inspect, modify, and analyze web traffic, making it the starting point for nearly every manual web application security assessment.
+  Select
+
+  ↓
+
+  Intercept When Necessary
+
+  ↓
+
+  Modify Carefully
+
+  ↓
+
+  Compare
+
+  ↓
+
+  Validate
+
+  ↓
+
+  Document
+  ```
+
+- By the end of the module, Proxy should function as the foundation of a repeatable Burp Suite investigation workflow rather than merely as a request-interception feature.
