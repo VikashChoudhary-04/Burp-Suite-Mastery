@@ -1808,9 +1808,6 @@ Automatically Exploitable CSWSH
 * Do not infer exploitability from Origin handling alone.
 
 ---
-
----
-
 ## CSRF Tokens and WebSockets
 
 * Some WebSocket handshakes or authentication messages may require anti-CSRF-style tokens.
@@ -2134,9 +2131,6 @@ Where Possible
 * Exact protocol details vary.
 
 ---
-
----
-
 ## GraphQL Subscription Security
 
 * Test:
@@ -2154,9 +2148,6 @@ Where Possible
   ```
 
 ---
-
----
-
 ## WebSocket Message Injection
 
 * User-controlled message fields may eventually reach:
@@ -2178,9 +2169,6 @@ Where Possible
 * Injection risk depends on how backend and frontend components process the data.
 
 ---
-
----
-
 ## Stored Data
 
 * A WebSocket message may store content that is later delivered through:
@@ -2200,9 +2188,6 @@ Where Possible
 * Trace the full data flow before evaluating impact.
 
 ---
-
----
-
 ## Output Encoding
 
 * If user-controlled WebSocket data is rendered in a browser, verify whether the receiving client handles it safely.
@@ -2222,9 +2207,6 @@ Where Possible
   ```
 
 ---
-
----
-
 ## Rate Limiting
 
 * WebSocket messages may bypass HTTP endpoint rate controls if separate protections are not implemented.
