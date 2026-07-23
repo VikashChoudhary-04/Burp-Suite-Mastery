@@ -210,11 +210,11 @@ During a Real Security Assessment?
 # Learning Path
 
 ```text
-Capstone Overview
+Capstone Assessment Overview
 
 ↓
 
-Assessment Setup
+Assessment Setup & Scope
 
 ↓
 
@@ -230,19 +230,27 @@ Authorization
 
 ↓
 
-API & Business Logic
+Input Validation & Injection
 
 ↓
 
-Injection & Input Validation
+Business Logic
 
 ↓
 
-Advanced Attack Surfaces
+File Upload & File Handling
 
 ↓
 
-Validation & Evidence
+API Security
+
+↓
+
+Advanced Web Attacks
+
+↓
+
+Race Conditions
 
 ↓
 
@@ -250,23 +258,15 @@ Professional Reporting
 
 ↓
 
-Full Capstone Assessment
+Burp Suite Interview Mastery
 
 ↓
 
-Burp Suite Interview Preparation
+Burp Suite Ultimate Quick Reference
 
 ↓
 
-Scenario-Based Interview Preparation
-
-↓
-
-Quick Reference
-
-↓
-
-Final Mastery Review
+Final Words
 ```
 
 ---
@@ -354,17 +354,15 @@ Professional Testing Methodology
 * These include:
 
   * Application mapping.
-  * Authentication.
-  * Session management.
+  * Authentication and session security.
   * Authorization.
-  * API security.
+  * Input validation and injection.
   * Business logic.
-  * Injection.
-  * Input validation.
-  * Advanced attack surfaces.
-  * Vulnerability validation.
-  * Evidence collection.
-  * Reporting.
+  * File upload and file handling.
+  * API security.
+  * Advanced web attacks.
+  * Race conditions.
+  * Professional reporting.
 
 ---
 
@@ -1173,7 +1171,7 @@ Sensitive Internal Infrastructure
 
 ## Step 8
 
-* Complete the final mastery checklist.
+* Review the final lessons learned and next-step guidance.
 
 ---
 
