@@ -118,15 +118,15 @@
 ├── 03-Session-Handling-Fundamentals.md
 ├── 04-Session-Handling-Rules.md
 ├── 05-Macros-and-Multi-Step-Workflows.md
-├── 06-Authentication-and-Session-Automation.md
-├── 07-Match-and-Replace-Workflows.md
-├── 08-Project-and-Configuration-Management.md
-├── 09-Advanced-Tool-Chaining-Workflows.md
-├── 10-Troubleshooting-Complex-Burp-Workflows.md
-├── 11-Professional-Workflow-and-Field-Notes.md
-├── 12-Interview-Questions.md
-├── 13-Practical-Exercises-and-Capstone.md
-└── 14-Quick-Revision.md
+├── 06-Authentication-Automation.md
+├── 07-Match-and-Replace.md
+├── 08-Logger-and-Traffic-Analysis.md
+├── 09-WebSocket-Testing-Workflows.md
+├── 10-HTTP2-Testing-Workflows.md
+├── 11-Race-Condition-Testing-with-Burp.md
+├── 12-Session-and-Authentication-Testing-Workflows.md
+├── 13-API-Testing-Workflows-with-Burp.md
+└── 14-Burp-Automation-and-Scaling-Workflows.md
 ```
 
 ---
