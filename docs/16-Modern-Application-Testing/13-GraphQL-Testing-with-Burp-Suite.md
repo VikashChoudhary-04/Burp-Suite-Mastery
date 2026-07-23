@@ -483,7 +483,54 @@ users: [User]
 * This represents a list of `User` objects.
 
 ---
+## Custom Scalars
 
+* GraphQL applications may define custom scalar types beyond the built-in scalar types.
+
+* Examples may include:
+
+  ```text
+  Date
+
+  DateTime
+
+  Email
+
+  URL
+
+  JSON
+
+  Application-Specific Types
+  ```
+
+* A declared scalar type does not automatically guarantee that its semantic constraints are securely enforced.
+* When testing custom scalars, evaluate whether backend validation matches the intended meaning of the type.
+* For example:
+  ```
+  Declared Type: Email
+
+  Does the server validate:
+
+  Syntax?
+
+  Length?
+
+  Allowed characters?
+
+  Normalization?
+
+  Business rules?
+  ```
+
+* Treat custom scalar validation separately from authorization.
+  ```
+  Valid Input
+
+  ≠
+
+  Authorized Operation
+  ```
+---
 ## GraphQL Test Card
 
 ```text
@@ -1682,7 +1729,42 @@ Load Testing
 
   Rate Limits
   ```
+---
+## Filtering and Search Controls
 
+* GraphQL operations may expose client-controlled filtering or search arguments.
+
+* Common examples include:
+
+  ```text
+  userId
+
+  organizationId
+
+  tenantId
+
+  owner
+
+  status
+
+  search
+  ```
+
+* Filters can change which objects are requested, but they must not define which objects the requester is authorized to access.
+  ```
+  Client-Supplied Filter
+
+  ≠
+
+  Server-Side Authorization Boundary
+  ```
+* Test whether changing filter values can expose:
+  - Objects belonging to another user.
+  - Objects belonging to another tenant.
+  - Hidden or restricted records.
+  - Data outside the authenticated user's permitted scope.
+
+* Always distinguish broader query functionality from an actual authorization failure.
 ---
 
 ## Pagination
@@ -1932,7 +2014,41 @@ Automatically Vulnerable
 * CSRF risk depends on authentication and request handling.
 
 ---
+## GraphQL and CORS
 
+* GraphQL endpoints follow normal browser cross-origin security rules.
+
+* CORS testing should evaluate:
+
+  ```text
+  Allowed Origins
+
+  Credential Handling
+
+  Sensitive Responses
+
+  Authentication Context
+  ```
+
+* The use of GraphQL does not fundamentally change CORS security principles
+* Evaluate whether cross-origin access allows an untrusted origin to read sensitive GraphQL responses in the victim's authenticated context.
+* Do not classify a permissive CORS response as a vulnerability without confirming:
+  ```
+  Attacker-Controlled Origin
+
+  +
+
+  Browser-Readable Sensitive Response
+
+  +
+
+  Relevant Authentication Context
+
+  +
+
+  Meaningful Security Impact
+  ```
+---
 ## Content Types
 
 * Some GraphQL servers accept:
