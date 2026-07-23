@@ -483,6 +483,7 @@ users: [User]
 * This represents a list of `User` objects.
 
 ---
+
 ## Custom Scalars
 
 * GraphQL applications may define custom scalar types beyond the built-in scalar types.
@@ -506,30 +507,33 @@ users: [User]
 * A declared scalar type does not automatically guarantee that its semantic constraints are securely enforced.
 * When testing custom scalars, evaluate whether backend validation matches the intended meaning of the type.
 * For example:
-  ```
+
+  ```text
   Declared Type: Email
 
-  Does the server validate:
+  Does the Server Validate:
 
   Syntax?
 
   Length?
 
-  Allowed characters?
+  Allowed Characters?
 
   Normalization?
 
-  Business rules?
+  Business Rules?
   ```
 
 * Treat custom scalar validation separately from authorization.
-  ```
-  Valid Input
 
-  ≠
+```text
+Valid Input
 
-  Authorized Operation
-  ```
+≠
+
+Authorized Operation
+```
+
 ---
 ## GraphQL Test Card
 
@@ -1730,6 +1734,7 @@ Load Testing
   Rate Limits
   ```
 ---
+
 ## Filtering and Search Controls
 
 * GraphQL operations may expose client-controlled filtering or search arguments.
@@ -1751,20 +1756,24 @@ Load Testing
   ```
 
 * Filters can change which objects are requested, but they must not define which objects the requester is authorized to access.
-  ```
-  Client-Supplied Filter
 
-  ≠
+```text
+Client-Supplied Filter
 
-  Server-Side Authorization Boundary
-  ```
+≠
+
+Server-Side Authorization Boundary
+```
+
 * Test whether changing filter values can expose:
-  - Objects belonging to another user.
-  - Objects belonging to another tenant.
-  - Hidden or restricted records.
-  - Data outside the authenticated user's permitted scope.
+
+  * Objects belonging to another user.
+  * Objects belonging to another tenant.
+  * Hidden or restricted records.
+  * Data outside the authenticated user's permitted scope.
 
 * Always distinguish broader query functionality from an actual authorization failure.
+
 ---
 
 ## Pagination
@@ -2014,6 +2023,7 @@ Automatically Vulnerable
 * CSRF risk depends on authentication and request handling.
 
 ---
+
 ## GraphQL and CORS
 
 * GraphQL endpoints follow normal browser cross-origin security rules.
@@ -2030,24 +2040,28 @@ Automatically Vulnerable
   Authentication Context
   ```
 
-* The use of GraphQL does not fundamentally change CORS security principles
+* The use of GraphQL does not fundamentally change CORS security principles.
+
 * Evaluate whether cross-origin access allows an untrusted origin to read sensitive GraphQL responses in the victim's authenticated context.
+
 * Do not classify a permissive CORS response as a vulnerability without confirming:
-  ```
-  Attacker-Controlled Origin
 
-  +
+```text
+Attacker-Controlled Origin
 
-  Browser-Readable Sensitive Response
++
 
-  +
+Browser-Readable Sensitive Response
 
-  Relevant Authentication Context
++
 
-  +
+Relevant Authentication Context
 
-  Meaningful Security Impact
-  ```
++
+
+Meaningful Security Impact
+```
+
 ---
 ## Content Types
 
