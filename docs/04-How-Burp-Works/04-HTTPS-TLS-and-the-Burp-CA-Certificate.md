@@ -2366,4 +2366,3 @@ through Burp.
 * HTTPS failures should be diagnosed across routing, CONNECT, browser-side TLS, upstream TLS, and application layers.
 * Decrypted Burp traffic may contain highly sensitive information and must be handled securely.
 * Trusting Burp's CA provides technical interception capability, not authorization to test systems.
-

@@ -1106,4 +1106,3 @@ Content-Security-Policy: default-src 'self'
 * Duplicate headers can create parsing differences.
 * A client-controlled header should not automatically be treated as trustworthy.
 * Modify headers based on hypotheses, not randomly.
-

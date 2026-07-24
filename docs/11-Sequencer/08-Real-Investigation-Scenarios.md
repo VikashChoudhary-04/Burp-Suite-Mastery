@@ -202,4 +202,3 @@ Document Evidence
 * Every statistical observation should be interpreted in context.
 * Validation is essential before reaching conclusions.
 * Good documentation strengthens the credibility of your findings.
-

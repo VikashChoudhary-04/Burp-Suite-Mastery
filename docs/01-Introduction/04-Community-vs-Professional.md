@@ -354,4 +354,3 @@ the core lesson is manual reasoning.
 * OAST evidence still requires interpretation.
 * Professional tools make skilled testers more efficient; they do not substitute for security knowledge.
 * Exact edition features can change, so current product details should be verified when needed.
-

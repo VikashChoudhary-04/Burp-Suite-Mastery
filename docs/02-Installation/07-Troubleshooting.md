@@ -794,4 +794,3 @@ Simple Test Destination
 * VPNs and extensions add troubleshooting layers.
 * A clean baseline helps isolate complex problems.
 * Systematic troubleshooting is faster than random configuration changes.
-

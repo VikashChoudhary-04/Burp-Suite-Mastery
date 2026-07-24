@@ -2686,4 +2686,3 @@ between them.
 * Forgotten upstream proxies, session rules, extensions, and match/replace rules are common causes of confusing Burp behavior.
 * Troubleshoot by reproducing, simplifying, inspecting, isolating, comparing, and restoring.
 * A professional Burp workflow begins with authorization and a clean project, and ends with controlled retention or disposal of assessment data.
-

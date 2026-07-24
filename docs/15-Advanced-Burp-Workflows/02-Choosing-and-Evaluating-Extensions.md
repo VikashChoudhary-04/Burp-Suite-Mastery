@@ -2103,4 +2103,3 @@ Reasoning:
 * Extension findings are leads that require manual validation.
 * Periodically review, update, disable, or remove extensions to keep the Burp environment predictable.
 * The best extension is not the one with the most features. It is the one that **solves a defined problem with acceptable risk, minimal complexity, and behavior you fully understand**.
-

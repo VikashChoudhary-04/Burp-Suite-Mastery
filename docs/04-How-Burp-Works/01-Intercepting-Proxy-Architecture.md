@@ -1453,4 +1453,3 @@ A browser UI restriction means the server enforces the same restriction.
 * UI restrictions are not substitutes for server-side security controls.
 * Burp's proxy architecture feeds requests into tools such as Repeater, Intruder, Scanner, and Comparer.
 * Understanding this architecture is essential before studying HTTPS interception and Burp's CA certificate.
-
